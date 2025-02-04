@@ -1,0 +1,19 @@
+#!/bin/bash
+
+pl=`cat $1 | grep -v "^#"`
+kw=`cat $2 | grep -v "^#"`
+count=$3
+fileout=$4
+
+for i in ${pl[@]}
+do
+    echo "|-- $i"
+    for j in ${kw[@]}
+    do
+        gh search repos $j --language $i --sort stars --limit $count --json language,description,url --jq '.[] | "\(.description) :: \(.url) :: \(.language)"' >> $fileout
+        echo "|------ $j"
+        sleep 2
+    done
+done
+
+
